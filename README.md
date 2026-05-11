@@ -12,7 +12,13 @@ Pada saat yang sama, program subscriber mendengarkan queue yang sama dan menerim
 Hal ini menunjukkan komunikasi asynchronous menggunakan AMQP dan RabbitMQ, di mana publisher dan subscriber tidak berkomunikasi secara langsung, tetapi melalui message broker.
 
 
-![rabbitmq](asset/rabbit.png)
+![rabbitmq1](asset/rabbit1.png)
 Saat publisher dijalankan berulang kali menggunakan `cargo run`, publisher terus mengirim event/message ke RabbitMQ. Setiap kali message dikirim, RabbitMQ menerima dan mendistribusikan message tersebut ke subscriber. 
 Spike yang terlihat pada chart RabbitMQ menunjukkan adanya peningkatan aktivitas message pada queue dan message broker. Semakin sering publisher dijalankan, semakin banyak message yang dikirim dalam waktu singkat, sehingga grafik monitoring menunjukkan lonjakan (spike) pada message rate dan traffic RabbitMQ.
 Hal ini membuktikan bahwa RabbitMQ secara aktif memproses event yang dikirim oleh publisher dan diterima oleh subscriber secara asynchronous.
+
+
+![rabbitmq2](asset/rabbit2.png)
+Saat publisher dijalankan terus-menerus, producer akan terus mengirim event/message ke RabbitMQ dan message tersebut disimpan sementara di dalam queue. Subscriber kemudian memproses message satu per satu secara asynchronous.
+
+Pada percobaan saya, total queue yang terlihat adalah `1`. Hal ini terjadi karena saya hanya menggunakan satu queue, yaitu `user_created`, untuk menampung seluruh event yang dikirim oleh publisher.
